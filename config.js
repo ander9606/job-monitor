@@ -14,6 +14,10 @@ module.exports = {
   scrapers: {
     getonboard:   true,
     computrabajo: true,
+    torre:        true,
+    remoteok:     true,
+    elempleo:     true,
+    indeed:       true,
   },
   schedule: process.env.CHECK_INTERVAL_HOURS
     ? `0 */${process.env.CHECK_INTERVAL_HOURS} * * *`

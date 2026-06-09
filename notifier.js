@@ -7,6 +7,10 @@ const CHAT_ID = process.env.TELEGRAM_CHAT_ID;
 const SOURCE_EMOJI = {
   'Get on Board': '🟢',
   'Computrabajo': '🔵',
+  'Torre.co':     '🟡',
+  'Remote OK':    '🟠',
+  'ElEmpleo':     '🔴',
+  'Indeed':       '🟣',
 };
 
 function escapeHtml(str = '') {
