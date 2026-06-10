@@ -33,7 +33,9 @@ async function scrape() {
           id, salary,
           title:    a.title        ?? 'Sin título',
           company:  a.company_name ?? 'Sin empresa',
-          link:     `https://www.getonbrd.com${a.url ?? ''}`,
+          link:     a.url
+            ? `https://www.getonbrd.com${a.url}`
+            : `https://www.getonbrd.com/jobs/${item.id}`,
           remote:   a.remote       ?? false,
           location: a.country      ?? 'Colombia',
           modality: a.modality     ?? null,
