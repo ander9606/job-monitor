@@ -1,22 +1,6 @@
 {
-  "project": {
-    "name": "job-monitor",
-    "repository": "https://github.com/ander9606/job-monitor"
-  },
-  "services": [
-    {
-      "name": "worker",
-      "type": "worker",
-      "build": {
-        "builder": "npm",
-        "command": "npm install --silent"
-      },
-      "startCommand": "npm start"
-    }
-  ],
-  "variables": [
-    { "key": "TELEGRAM_BOT_TOKEN", "value": "", "comment": "Set this in Railway Secrets, do NOT commit a real token" },
-    { "key": "TELEGRAM_CHAT_ID", "value": "", "comment": "Set this in Railway Secrets" },
-    { "key": "CHECK_INTERVAL_HOURS", "value": "2", "comment": "Optional: frequency in hours" }
-  ]
+  "$schema": "https://railway.com/railway.schema.json",
+  "deploy": {
+    "startCommand": "npm start"
+  }
 }
