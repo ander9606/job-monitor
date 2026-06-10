@@ -12,6 +12,7 @@ const SOURCE_EMOJI = {
   'Remote OK':      '🟠',
   'ElEmpleo':       '🔴',
   'Indeed':         '🟣',
+  'Magneto':        '🟩',
   'Workana':        '🟤',
   'Freelancer.com': '⚫',
   'Malt':           '🔷',

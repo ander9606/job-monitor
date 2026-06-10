@@ -20,6 +20,7 @@ module.exports = {
     remoteok:     false,
     elempleo:     true,
     indeed:       true,
+    magneto:      true,
     workana:      true,
     freelancer:   true,
     malt:         true,
