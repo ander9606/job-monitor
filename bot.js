@@ -12,6 +12,17 @@ const COLOMBIA_SOURCES  = new Set(['Get on Board', 'Computrabajo', 'ElEmpleo', '
 const FREELANCE_SOURCES = new Set(['Workana', 'Freelancer.com', 'Malt']);
 const MAX_CARDS = 8;
 
+const SOURCE_CMD = {
+  '/getonboard':   'Get on Board',
+  '/computrabajo': 'Computrabajo',
+  '/torre':        'Torre.co',
+  '/elempleo':     'ElEmpleo',
+  '/indeed':       'Indeed',
+  '/workana':      'Workana',
+  '/freelancer':   'Freelancer.com',
+  '/malt':         'Malt',
+};
+
 let offset   = 0;
 let scanning = false;
 
@@ -46,10 +57,16 @@ async function handleCommand(text) {
     case '/ayuda':
       await notifier.sendMessage(
         `🤖 <b>Job Monitor — Comandos</b>\n\n` +
+        `<b>Por filtro:</b>\n` +
         `/colombia — Empleos en Colombia\n` +
         `/remoto — Solo trabajos 100% remotos\n` +
         `/freelance — Proyectos Workana · Freelancer · Malt\n` +
-        `/habilidades — Ofertas según tu stack (MY_SKILLS)\n` +
+        `/habilidades — Ofertas según tu stack (MY_SKILLS)\n\n` +
+        `<b>Por portal:</b>\n` +
+        `/getonboard · /computrabajo · /torre\n` +
+        `/elempleo · /indeed · /workana\n` +
+        `/freelancer · /malt\n\n` +
+        `<b>Acciones:</b>\n` +
         `/ahora — Revisar todos los portales ya\n` +
         `/stats — Historial de revisiones\n` +
         `/ayuda — Este mensaje`
@@ -126,8 +143,17 @@ async function handleCommand(text) {
       break;
     }
 
-    default:
-      await notifier.sendMessage(`❓ Comando desconocido. Usa /ayuda para ver las opciones.`);
+    default: {
+      const sourceName = SOURCE_CMD[cmd];
+      if (sourceName) {
+        const jobs = db.loadLastJobs().filter(j => j.source === sourceName);
+        const emoji = { 'Get on Board':'🟢','Computrabajo':'🔵','Torre.co':'🟡',
+          'ElEmpleo':'🔴','Indeed':'🟣','Workana':'🟤','Freelancer.com':'⚫','Malt':'🔷' }[sourceName] || '⚪';
+        await sendCards(jobs, `${emoji} Sin ofertas de <b>${sourceName}</b> en caché. Usa /ahora para revisar.`);
+      } else {
+        await notifier.sendMessage(`❓ Comando desconocido. Usa /ayuda para ver las opciones.`);
+      }
+    }
   }
 }
 
