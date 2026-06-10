@@ -6,12 +6,15 @@ const TOKEN   = process.env.TELEGRAM_BOT_TOKEN;
 const CHAT_ID = process.env.TELEGRAM_CHAT_ID;
 
 const SOURCE_EMOJI = {
-  'Get on Board': '🟢',
-  'Computrabajo': '🔵',
-  'Torre.co':     '🟡',
-  'Remote OK':    '🟠',
-  'ElEmpleo':     '🔴',
-  'Indeed':       '🟣',
+  'Get on Board':   '🟢',
+  'Computrabajo':   '🔵',
+  'Torre.co':       '🟡',
+  'Remote OK':      '🟠',
+  'ElEmpleo':       '🔴',
+  'Indeed':         '🟣',
+  'Workana':        '🟤',
+  'Freelancer.com': '⚫',
+  'Malt':           '🔷',
 };
 
 function escapeHtml(str = '') {

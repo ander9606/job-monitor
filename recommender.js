@@ -1,3 +1,13 @@
+const FREELANCE_SOURCES = new Set(['Workana', 'Freelancer.com', 'Malt']);
+
+const FREELANCE_TIPS = [
+  'Propuesta: abre con el problema del cliente, no con tu perfil',
+  'Tarifa: revisa proyectos similares cerrados antes de ofertar',
+  'Portafolio: enlaza 1-2 proyectos relevantes directamente en la propuesta',
+  'Timeline: sé específico ("5 días hábiles") — los vagos generan dudas',
+  'Cierre: termina con una pregunta concreta ("¿Tienes el diseño listo o lo definimos juntos?")',
+];
+
 const TECH_MAP = [
   {
     match: ['react native', 'react-native'],
@@ -86,15 +96,19 @@ const DEFAULT_TOPICS = [
 ];
 
 function getRecommendations(job) {
-  const text = `${job.title} ${job.source}`.toLowerCase();
+  const text  = `${job.title} ${job.source}`.toLowerCase();
   const found = [];
   for (const entry of TECH_MAP) {
     if (entry.match.some(kw => text.includes(kw))) {
       found.push(...entry.topics);
     }
   }
-  const unique = [...new Set(found)];
-  return unique.length > 0 ? unique.slice(0, 5) : DEFAULT_TOPICS;
+  const techTips = [...new Set(found)].slice(0, FREELANCE_SOURCES.has(job.source) ? 3 : 5);
+
+  if (FREELANCE_SOURCES.has(job.source)) {
+    return [...techTips.length ? techTips : DEFAULT_TOPICS.slice(0, 2), ...FREELANCE_TIPS.slice(0, 3)];
+  }
+  return techTips.length > 0 ? techTips : DEFAULT_TOPICS;
 }
 
 module.exports = { getRecommendations };

@@ -18,6 +18,9 @@ module.exports = {
     remoteok:     true,
     elempleo:     true,
     indeed:       true,
+    workana:      true,
+    freelancer:   true,
+    malt:         true,
   },
   schedule: process.env.CHECK_INTERVAL_HOURS
     ? `0 */${process.env.CHECK_INTERVAL_HOURS} * * *`

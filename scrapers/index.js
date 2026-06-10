@@ -5,6 +5,9 @@ const torre        = require('./torre');
 const remoteok     = require('./remoteok');
 const elempleo     = require('./elempleo');
 const indeed       = require('./indeed');
+const workana      = require('./workana');
+const freelancer   = require('./freelancer');
+const malt         = require('./malt');
 
 const EXCLUDE = config.titleExclude.map(w => w.toLowerCase());
 const MUST    = config.titleMustInclude.map(w => w.toLowerCase());
@@ -61,6 +64,27 @@ async function runAll() {
       allJobs.push(...jobs); sources.push('Indeed');
       console.log(`[Scrapers] Indeed: ${jobs.length}`);
     } catch (e) { console.error('[Scrapers] Indeed:', e.message); }
+  }
+  if (config.scrapers.workana) {
+    try {
+      const jobs = await workana.scrape();
+      allJobs.push(...jobs); sources.push('Workana');
+      console.log(`[Scrapers] Workana: ${jobs.length}`);
+    } catch (e) { console.error('[Scrapers] Workana:', e.message); }
+  }
+  if (config.scrapers.freelancer) {
+    try {
+      const jobs = await freelancer.scrape();
+      allJobs.push(...jobs); sources.push('Freelancer.com');
+      console.log(`[Scrapers] Freelancer.com: ${jobs.length}`);
+    } catch (e) { console.error('[Scrapers] Freelancer.com:', e.message); }
+  }
+  if (config.scrapers.malt) {
+    try {
+      const jobs = await malt.scrape();
+      allJobs.push(...jobs); sources.push('Malt');
+      console.log(`[Scrapers] Malt: ${jobs.length}`);
+    } catch (e) { console.error('[Scrapers] Malt:', e.message); }
   }
   const filtered = applyFilters(allJobs);
   console.log(`[Scrapers] Total tras filtros: ${filtered.length}/${allJobs.length}`);
