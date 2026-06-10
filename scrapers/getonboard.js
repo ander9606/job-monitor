@@ -27,6 +27,8 @@ async function scrape() {
           salary = `$${(a.salary_min/1000).toFixed(0)}k – $${(a.salary_max/1000).toFixed(0)}k USD/mes`;
         else if (a.salary_min)
           salary = `Desde $${(a.salary_min/1000).toFixed(0)}k USD/mes`;
+        else if (a.salary)
+          salary = a.salary;
         jobs.push({
           id, salary,
           title:    a.title        ?? 'Sin título',

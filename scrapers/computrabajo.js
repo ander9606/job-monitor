@@ -56,7 +56,10 @@ async function scrape() {
           const company = $el.find('.fs16,[class*="company"],[class*="empresa"]').first().text().trim();
           const href    = $el.find('a[href*="oferta"]').first().attr('href') || code;
           const link    = href.startsWith('http') ? href : `https://co.computrabajo.com${href}`;
-          const salary  = $el.find('[class*="salary"],[class*="salario"]').first().text().trim() || null;
+          const salary  = $el.find(
+            '[class*="salary"],[class*="salario"],[class*="remuner"],[itemprop*="salary"],' +
+            'p.fs11,.tag.green,.tag.blue,[class*="tag_sal"]'
+          ).first().text().trim() || null;
           const remote  = $el.text().toLowerCase().includes('remoto');
           if (!title) return;
           jobs.push({ id, title, company, link, salary, remote, source: 'Computrabajo' });
