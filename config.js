@@ -17,7 +17,7 @@ module.exports = {
     getonboard:   true,
     computrabajo: true,
     torre:        true,
-    remoteok:     true,
+    remoteok:     false,
     elempleo:     true,
     indeed:       true,
     workana:      true,
