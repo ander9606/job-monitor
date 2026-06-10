@@ -81,4 +81,10 @@ async function notifySummary({ checked, found, sources }) {
   ].join('\n'));
 }
 
-module.exports = { notifyJobs, notifySummary };
+async function sendJobCard(job) {
+  await sendMessage(formatJob(job), {
+    inline_keyboard: [[{ text: '📝 Ver y Aplicar', url: job.link }]],
+  });
+}
+
+module.exports = { notifyJobs, notifySummary, sendMessage, sendJobCard };

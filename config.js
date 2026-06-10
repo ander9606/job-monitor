@@ -9,6 +9,8 @@ module.exports = {
     'software developer',
     'software engineer',
   ],
+  mySkills: (process.env.MY_SKILLS || 'react,node,full stack,react native,backend')
+    .split(',').map(s => s.trim().toLowerCase()).filter(Boolean),
   titleMustInclude: [],
   titleExclude: ['senior', 'lead', 'architect', 'manager', 'qa', 'tester', 'scrum master'],
   scrapers: {
