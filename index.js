@@ -1,4 +1,5 @@
 require('dotenv').config();
+require('./utils/http'); // configure axios defaults and retries
 const cron     = require('node-cron');
 const config   = require('./config');
 const scrapers = require('./scrapers');
@@ -30,4 +31,10 @@ if (RUN_ONCE) {
   console.log(`[Monitor] 🟢 Activo | Schedule: ${config.schedule}`);
   check();
   cron.schedule(config.schedule, check, { timezone: 'America/Bogota' });
+
+  process.on('SIGTERM', () => {
+    console.log('[Monitor] SIGTERM received, exiting gracefully...');
+    // let current work finish naturally; then exit
+    process.exit(0);
+  });
 }
