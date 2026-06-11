@@ -6,6 +6,7 @@ const remoteok     = require('./remoteok');
 const elempleo     = require('./elempleo');
 const indeed       = require('./indeed');
 const magneto      = require('./magneto');
+const bumeran      = require('./bumeran');
 const workana      = require('./workana');
 const freelancer   = require('./freelancer');
 const malt         = require('./malt');
@@ -72,6 +73,13 @@ async function runAll() {
       allJobs.push(...jobs); sources.push('Magneto');
       console.log(`[Scrapers] Magneto: ${jobs.length}`);
     } catch (e) { console.error('[Scrapers] Magneto:', e.message); }
+  }
+  if (config.scrapers.bumeran) {
+    try {
+      const jobs = await bumeran.scrape();
+      allJobs.push(...jobs); sources.push('Bumeran');
+      console.log(`[Scrapers] Bumeran: ${jobs.length}`);
+    } catch (e) { console.error('[Scrapers] Bumeran:', e.message); }
   }
   if (config.scrapers.workana) {
     try {

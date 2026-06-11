@@ -15,12 +15,13 @@ module.exports = {
   titleExclude: ['senior', 'lead', 'architect', 'manager', 'qa', 'tester', 'scrum master'],
   scrapers: {
     getonboard:   true,
-    computrabajo: true,
+    computrabajo: false,  // Cloudflare bloquea axios
     torre:        true,
-    remoteok:     false,
-    elempleo:     true,
-    indeed:       true,
+    remoteok:     false,  // cobra por aplicar
+    elempleo:     false,  // Cloudflare bloquea axios
+    indeed:       false,  // Cloudflare bloquea axios
     magneto:      true,
+    bumeran:      true,
     workana:      true,
     freelancer:   true,
     malt:         true,

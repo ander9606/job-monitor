@@ -19,6 +19,7 @@ const SOURCE_CMD = {
   '/elempleo':     'ElEmpleo',
   '/indeed':       'Indeed',
   '/magneto':      'Magneto',
+  '/bumeran':      'Bumeran',
   '/workana':      'Workana',
   '/freelancer':   'Freelancer.com',
   '/malt':         'Malt',
@@ -65,7 +66,7 @@ async function handleCommand(text) {
         `/habilidades — Ofertas según tu stack (MY_SKILLS)\n\n` +
         `<b>Por portal:</b>\n` +
         `/getonboard · /computrabajo · /torre\n` +
-        `/elempleo · /indeed · /magneto\n` +
+        `/elempleo · /indeed · /magneto · /bumeran\n` +
         `/workana · /freelancer · /malt\n\n` +
         `<b>Acciones:</b>\n` +
         `/ahora — Revisar todos los portales ya\n` +
@@ -149,7 +150,7 @@ async function handleCommand(text) {
       if (sourceName) {
         const jobs = db.loadLastJobs().filter(j => j.source === sourceName);
         const emoji = { 'Get on Board':'🟢','Computrabajo':'🔵','Torre.co':'🟡',
-          'ElEmpleo':'🔴','Indeed':'🟣','Magneto':'🟩','Workana':'🟤','Freelancer.com':'⚫','Malt':'🔷' }[sourceName] || '⚪';
+          'ElEmpleo':'🔴','Indeed':'🟣','Magneto':'🟩','Bumeran':'🫐','Workana':'🟤','Freelancer.com':'⚫','Malt':'🔷' }[sourceName] || '⚪';
         await sendCards(jobs, `${emoji} Sin ofertas de <b>${sourceName}</b> en caché. Usa /ahora para revisar.`);
       } else {
         await notifier.sendMessage(`❓ Comando desconocido. Usa /ayuda para ver las opciones.`);

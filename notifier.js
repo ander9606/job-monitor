@@ -13,6 +13,7 @@ const SOURCE_EMOJI = {
   'ElEmpleo':       '🔴',
   'Indeed':         '🟣',
   'Magneto':        '🟩',
+  'Bumeran':        '🫐',
   'Workana':        '🟤',
   'Freelancer.com': '⚫',
   'Malt':           '🔷',
