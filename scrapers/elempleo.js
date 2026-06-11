@@ -1,11 +1,5 @@
-const axios   = require('axios');
 const cheerio = require('cheerio');
-
-const HEADERS = {
-  'User-Agent':      'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36',
-  'Accept':          'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
-  'Accept-Language': 'es-CO,es;q=0.9',
-};
+const { getHtml } = require('./browser');
 
 const QUERIES = [
   'desarrollador full stack',
@@ -18,20 +12,15 @@ async function scrape() {
   const jobs = [], seen = new Set();
   for (const query of QUERIES) {
     try {
-      const url = `https://www.elempleo.com/co/ofertas-empleo/colombia/?q=${encodeURIComponent(query)}`;
-      const { data, status } = await axios.get(url, {
-        headers: HEADERS, timeout: 15000,
-        validateStatus: s => s < 500,
-      });
-      if (status === 403 || status === 429) { await new Promise(r => setTimeout(r, 5000)); continue; }
-
-      const $ = cheerio.load(data);
-      let found = 0;
+      const url  = `https://www.elempleo.com/co/ofertas-empleo/colombia/?q=${encodeURIComponent(query)}`;
+      const html = await getHtml(url, '.item-oferta, [class*="oferta"], article');
+      const $    = cheerio.load(html);
+      let found  = 0;
 
       $('.item-oferta, .job-item, [class*="oferta"], article[id]').each((_, el) => {
-        const $el = $(el);
+        const $el     = $(el);
         const titleEl = $el.find('h2,h3,[class*="titulo"],[class*="title"]').first();
-        const title = titleEl.text().trim();
+        const title   = titleEl.text().trim();
         if (!title) return;
 
         const href = titleEl.find('a').attr('href') || $el.find('a').first().attr('href') || '';
@@ -49,7 +38,7 @@ async function scrape() {
       });
       console.log(`[ElEmpleo] "${query}": ${found}`);
     } catch (e) { console.error(`[ElEmpleo] "${query}":`, e.message); }
-    await new Promise(r => setTimeout(r, 2000 + Math.random() * 1000));
+    await new Promise(r => setTimeout(r, 2000));
   }
   return jobs;
 }

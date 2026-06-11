@@ -1,12 +1,5 @@
-const axios   = require('axios');
 const cheerio = require('cheerio');
-
-const HEADERS = {
-  'User-Agent':      'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36',
-  'Accept':          'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
-  'Accept-Language': 'es-CO,es;q=0.9',
-  'Referer':         'https://co.indeed.com/',
-};
+const { getHtml } = require('./browser');
 
 const QUERIES = [
   'desarrollador full stack',
@@ -18,18 +11,13 @@ async function scrape() {
   const jobs = [], seen = new Set();
   for (const query of QUERIES) {
     try {
-      const url = `https://co.indeed.com/jobs?q=${encodeURIComponent(query)}&l=Colombia&sort=date`;
-      const { data, status } = await axios.get(url, {
-        headers: HEADERS, timeout: 15000,
-        validateStatus: s => s < 500,
-      });
-      if (status === 403 || status === 429) { await new Promise(r => setTimeout(r, 8000)); continue; }
-
-      const $ = cheerio.load(data);
-      let found = 0;
+      const url  = `https://co.indeed.com/jobs?q=${encodeURIComponent(query)}&l=Colombia&sort=date`;
+      const html = await getHtml(url, '.job_seen_beacon, .resultContent');
+      const $    = cheerio.load(html);
+      let found  = 0;
 
       $('div.job_seen_beacon, .resultContent, [class*="cardOutline"]').each((_, el) => {
-        const $el = $(el);
+        const $el     = $(el);
         const titleEl = $el.find('h2.jobTitle a, [class*="jobTitle"] a').first();
         const title   = titleEl.text().trim();
         if (!title) return;
@@ -51,7 +39,7 @@ async function scrape() {
       });
       console.log(`[Indeed] "${query}": ${found}`);
     } catch (e) { console.error(`[Indeed] "${query}":`, e.message); }
-    await new Promise(r => setTimeout(r, 3000 + Math.random() * 2000));
+    await new Promise(r => setTimeout(r, 2000));
   }
   return jobs;
 }

@@ -6,6 +6,7 @@ const scrapers = require('./scrapers');
 const db       = require('./db');
 const notifier = require('./notifier');
 const bot      = require('./bot');
+const { closeBrowser } = require('./scrapers/browser');
 
 const RUN_ONCE = process.argv.includes('--once');
 
@@ -35,9 +36,9 @@ if (RUN_ONCE) {
   check();
   cron.schedule(config.schedule, check, { timezone: 'America/Bogota' });
 
-  process.on('SIGTERM', () => {
+  process.on('SIGTERM', async () => {
     console.log('[Monitor] SIGTERM received, exiting gracefully...');
-    // let current work finish naturally; then exit
+    await closeBrowser();
     process.exit(0);
   });
 }
