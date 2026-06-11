@@ -1,32 +1,20 @@
-const axios   = require('axios');
 const cheerio = require('cheerio');
-
-const HEADERS = {
-  'User-Agent':      'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36',
-  'Accept':          'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
-  'Accept-Language': 'es-CO,es;q=0.9',
-};
+const { getHtml } = require('./browser');
 
 const PAGES = [
-  { url: 'https://www.workana.com/jobs?area=it-programming&language=es&subcategory=web-development', label: 'web dev' },
-  { url: 'https://www.workana.com/jobs?area=it-programming&language=es&subcategory=mobile-development', label: 'mobile dev' },
-  { url: 'https://www.workana.com/jobs?area=it-programming&language=es&subcategory=software-development', label: 'software dev' },
+  { url: 'https://www.workana.com/jobs?area=it-programming&language=es&subcategory=web-development',    label: 'web dev'     },
+  { url: 'https://www.workana.com/jobs?area=it-programming&language=es&subcategory=mobile-development', label: 'mobile dev'  },
+  { url: 'https://www.workana.com/jobs?area=it-programming&language=es&subcategory=software-development',label: 'software dev'},
 ];
 
 async function scrape() {
   const jobs = [], seen = new Set();
   for (const { url, label } of PAGES) {
     try {
-      const { data, status } = await axios.get(url, {
-        headers: HEADERS, timeout: 15000,
-        validateStatus: s => s < 500,
-      });
-      if (status !== 200) { await new Promise(r => setTimeout(r, 4000)); continue; }
+      const html = await getHtml(url, '.project-item, [class*="project"], a[href*="/job/"]');
+      const $    = cheerio.load(html);
+      let found  = 0, $cards = $([]);
 
-      const $ = cheerio.load(data);
-      let found = 0;
-
-      let $cards = $([]);
       for (const sel of ['.project-item', '[class*="project"]', '.job-card', 'article']) {
         $cards = $(sel).filter((_, el) => $(el).find('a[href*="/job/"]').length > 0);
         if ($cards.length) break;
@@ -52,7 +40,7 @@ async function scrape() {
       });
       console.log(`[Workana] "${label}": ${found}`);
     } catch (e) { console.error(`[Workana] "${label}":`, e.message); }
-    await new Promise(r => setTimeout(r, 2000 + Math.random() * 1500));
+    await new Promise(r => setTimeout(r, 1500));
   }
   return jobs;
 }

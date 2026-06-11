@@ -1,4 +1,7 @@
-const puppeteer = require('puppeteer');
+const puppeteer      = require('puppeteer-extra');
+const StealthPlugin  = require('puppeteer-extra-plugin-stealth');
+
+puppeteer.use(StealthPlugin());
 
 let _browser = null;
 
@@ -12,6 +15,7 @@ const LAUNCH_OPTS = {
     '--disable-gpu',
     '--no-first-run',
     '--no-zygote',
+    '--ignore-certificate-errors',
     '--window-size=1280,800',
   ],
 };
@@ -20,7 +24,7 @@ async function getBrowser() {
   if (_browser?.isConnected()) return _browser;
   _browser = await puppeteer.launch(LAUNCH_OPTS);
   _browser.on('disconnected', () => { _browser = null; });
-  console.log('[Browser] Chromium lanzado');
+  console.log('[Browser] Chromium lanzado (stealth)');
   return _browser;
 }
 
@@ -28,7 +32,6 @@ async function getHtml(url, waitForSelector = null) {
   const browser = await getBrowser();
   const page    = await browser.newPage();
   try {
-    await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36');
     await page.setExtraHTTPHeaders({ 'Accept-Language': 'es-CO,es;q=0.9' });
     await page.goto(url, { waitUntil: 'networkidle2', timeout: 30000 });
     if (waitForSelector) {
