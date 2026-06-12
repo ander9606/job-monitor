@@ -20,6 +20,7 @@ const SOURCE_CMD = {
   '/indeed':       'Indeed',
   '/magneto':      'Magneto',
   '/bumeran':      'Bumeran',
+  '/remotive':     'Remotive',
   '/workana':      'Workana',
   '/freelancer':   'Freelancer.com',
   '/malt':         'Malt',
@@ -150,7 +151,7 @@ async function handleCommand(text) {
       if (sourceName) {
         const jobs = db.loadLastJobs().filter(j => j.source === sourceName);
         const emoji = { 'Get on Board':'🟢','Computrabajo':'🔵','Torre.co':'🟡',
-          'ElEmpleo':'🔴','Indeed':'🟣','Magneto':'🟩','Bumeran':'🫐','Workana':'🟤','Freelancer.com':'⚫','Malt':'🔷' }[sourceName] || '⚪';
+          'ElEmpleo':'🔴','Indeed':'🟣','Magneto':'🟩','Bumeran':'🫐','Remotive':'🌐','Workana':'🟤','Freelancer.com':'⚫','Malt':'🔷' }[sourceName] || '⚪';
         await sendCards(jobs, `${emoji} Sin ofertas de <b>${sourceName}</b> en caché. Usa /ahora para revisar.`);
       } else {
         await notifier.sendMessage(`❓ Comando desconocido. Usa /ayuda para ver las opciones.`);

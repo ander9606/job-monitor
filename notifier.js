@@ -14,6 +14,7 @@ const SOURCE_EMOJI = {
   'Indeed':         '🟣',
   'Magneto':        '🟩',
   'Bumeran':        '🫐',
+  'Remotive':       '🌐',
   'Workana':        '🟤',
   'Freelancer.com': '⚫',
   'Malt':           '🔷',
